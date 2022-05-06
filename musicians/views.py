@@ -42,8 +42,11 @@ class MusicianView(APIView):
                 return Response({'errors': 'musician with instrument not found'}, status.HTTP_404_NOT_FOUND)
         # ipdb.set_trace()
 
-        musicians = Musician.objects.all()
-        # Aqui o campo many=True é obrigatório, pois uma lista está sendo informada para o serializador
-        serializer = MusicianSerializer(musicians, many=True)
+        try: 
+            musicians = Musician.objects.all()
+            serializer = MusicianSerializer(musicians, many=True)
 
-        return Response(serializer.data)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except:
+            return Response([])
+        # Aqui o campo many=True é obrigatório, pois uma lista está sendo informada para o serializador
